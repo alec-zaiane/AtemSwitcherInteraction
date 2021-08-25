@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31605.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blackmagic", "Blackmagic.csproj", "{0C02ACF0-166D-47D6-BB57-E172830F8D7F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0C02ACF0-166D-47D6-BB57-E172830F8D7F}.Debug|x86.ActiveCfg = Debug|x86
+		{0C02ACF0-166D-47D6-BB57-E172830F8D7F}.Debug|x86.Build.0 = Debug|x86
+		{0C02ACF0-166D-47D6-BB57-E172830F8D7F}.Release|x86.ActiveCfg = Release|x86
+		{0C02ACF0-166D-47D6-BB57-E172830F8D7F}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5BE88E26-277B-4CA9-9D9D-FDF48AD5A92F}
+	EndGlobalSection
+EndGlobal
