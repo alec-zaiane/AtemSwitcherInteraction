@@ -15,3 +15,12 @@ H:\Blackmagic ATEM Switcher SDK\obj\x86\Debug\Blackmagic.csproj.CoreCompileInput
 H:\Blackmagic ATEM Switcher SDK\obj\x86\Debug\ConsoleApplication.exe
 H:\Blackmagic ATEM Switcher SDK\obj\x86\Debug\ConsoleApplication.pdb
 H:\Blackmagic ATEM Switcher SDK\bin\Debug\ConsoleApplication.exe.config
+C:\Users\sgmag\AtemSwitcherInteraction\Blackmagic ATEM Switcher SDK\bin\Debug\ConsoleApplication.exe.config
+C:\Users\sgmag\AtemSwitcherInteraction\Blackmagic ATEM Switcher SDK\bin\Debug\ConsoleApplication.exe
+C:\Users\sgmag\AtemSwitcherInteraction\Blackmagic ATEM Switcher SDK\bin\Debug\ConsoleApplication.pdb
+C:\Users\sgmag\AtemSwitcherInteraction\Blackmagic ATEM Switcher SDK\obj\x86\Debug\Blackmagic.csprojAssemblyReference.cache
+C:\Users\sgmag\AtemSwitcherInteraction\Blackmagic ATEM Switcher SDK\obj\x86\Debug\Interop.BMDSwitcherAPI.dll
+C:\Users\sgmag\AtemSwitcherInteraction\Blackmagic ATEM Switcher SDK\obj\x86\Debug\Blackmagic.csproj.ResolveComReference.cache
+C:\Users\sgmag\AtemSwitcherInteraction\Blackmagic ATEM Switcher SDK\obj\x86\Debug\Blackmagic.csproj.CoreCompileInputs.cache
+C:\Users\sgmag\AtemSwitcherInteraction\Blackmagic ATEM Switcher SDK\obj\x86\Debug\ConsoleApplication.exe
+C:\Users\sgmag\AtemSwitcherInteraction\Blackmagic ATEM Switcher SDK\obj\x86\Debug\ConsoleApplication.pdb

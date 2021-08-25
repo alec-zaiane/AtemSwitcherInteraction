@@ -53,7 +53,7 @@ namespace SimpleSwitcher
 
 			// Connect to switcher
 			Console.Write("Enter switcher IP address: ");
-			String switcherIP = Console.ReadLine();
+            String switcherIP = "192.168.1.2";//Console.ReadLine();
 
 			discovery.ConnectTo(switcherIP, out IBMDSwitcher switcher, out _BMDSwitcherConnectToFailure failureReason);
 			Console.WriteLine("Connected to switcher");
@@ -61,8 +61,8 @@ namespace SimpleSwitcher
 			var atem = new AtemSwitcher(switcher);
 
 			// Get reference to various objects
-			IBMDSwitcherMixEffectBlock me0 = atem.MixEffectBlocks.First();
-			IBMDSwitcherKey switcher_key = atem.switcher_keyers.First();
+			IBMDSwitcherMixEffectBlock me0 = atem.MixEffectBlocks.FirstOrDefault();
+			IBMDSwitcherKey switcher_key = atem.switcher_keyers.FirstOrDefault();
 			IBMDSwitcherTransitionParameters me0TransitionParams = me0 as IBMDSwitcherTransitionParameters;
 			IBMDSwitcherTransitionWipeParameters me0WipeTransitionParams = me0 as IBMDSwitcherTransitionWipeParameters;
 			IBMDSwitcherInput input3 = atem.SwitcherInputs
@@ -74,33 +74,36 @@ namespace SimpleSwitcher
 
 
 			long prevProgramId;
-			//me0.GetProgramInput
+            //me0.GetProgramInput(out prevProgramId);
 			//
+
+
 			switcher_key.GetInputFill(out prevProgramId);
 
 			long programId;
 
 			while (true)
 			{
-				
-				switcher_key.GetInputFill(out programId);
 
+                //switcher_key.GetInputFill(out programId);
+                switcher_key.GetInputFill(out programId);
+                Console.WriteLine(programId);
 
-				if(prevProgramId != programId)
+                if (prevProgramId != programId)
                 {
-					//Trigger Camera Change in Unreal
-					
+                    //Trigger Camera Change in Unreal
+                    //Console.WriteLine(programId);
 
-					if (programId == 0 && prevProgramId == 2002) break;
+
+                    if (programId == 8 && prevProgramId == 7) break;
 
 					prevProgramId = programId;
-					//Console.WriteLine(programId);
 					//theoretically this is where we send outputs instead of sending to console ._. -Sam
 					if (programId == 1)
 					{
 						SendKeys.SendWait("{9}");
-					}
-					if(programId == 2)
+					}   
+					if(programId == 3)
                     {
 						SendKeys.SendWait("{2}");
                     }
@@ -149,16 +152,27 @@ namespace SimpleSwitcher
         {
 			get
             {
-				switcher.CreateIterator(typeof(IBMDSwitcherKey).GUID, out IntPtr meIteratorPtr);
-				IBMDSwitcherKey keyIterator = Marshal.GetObjectForIUnknown(meIteratorPtr) as IBMDSwitcherKey;
-				if (keyIterator == null)
+                var atem = new AtemSwitcher(switcher);
+                IBMDSwitcherMixEffectBlock me0 = atem.MixEffectBlocks.FirstOrDefault();
+                me0.CreateIterator(typeof(IBMDSwitcherKeyIterator).GUID, out IntPtr KeyPtr);
+                IBMDSwitcherKeyIterator key_iterator = Marshal.GetObjectForIUnknown(KeyPtr) as IBMDSwitcherKeyIterator;
+				if (key_iterator == null)
 				{
 					yield break;
 				}
-				else
-				{
-					yield return keyIterator;
-				}
+                while(true)
+                {
+                    key_iterator.Next(out IBMDSwitcherKey key);
+                    if(key != null)
+                    {
+                        yield return key;
+                    }
+                    else
+                    {
+                        yield break;
+                    }
+
+                }
 		
             }
 
