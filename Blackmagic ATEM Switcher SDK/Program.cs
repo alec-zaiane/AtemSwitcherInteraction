@@ -24,7 +24,7 @@
 ** DEALINGS IN THE SOFTWARE.
 ** -LICENSE-END-
 */
-
+using BMDSwitcherAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,19 +33,78 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-using BMDSwitcherAPI;
 
 namespace SimpleSwitcher
 {
 	class Program
 	{
-		static long GetInputId(IBMDSwitcherInput input)
+
+        static long GetInputId(IBMDSwitcherInput input)
 		{
 			input.GetInputId(out long id);
 			return id;
 		}
 
-		static void Main(string[] args)
+        static void setStatCam(IBMDSwitcherKeyAdvancedChromaParameters chroma_params)
+        {
+            System.Threading.Thread.Sleep(1000);
+            chroma_params.SetSampledColor(235, 128, 128);
+            chroma_params.SetForegroundLevel(100);
+            chroma_params.SetBackgroundLevel(0);
+            chroma_params.SetKeyEdge(1.0);
+            chroma_params.SetSpillSuppress(0);
+            chroma_params.SetFlareSuppress(0);
+        }
+
+        static void setTrackedCam(IBMDSwitcherKeyAdvancedChromaParameters chroma_params)
+        {
+            System.Threading.Thread.Sleep(1000);
+            chroma_params.SetSampledColor(16, 128, 128);
+            chroma_params.SetForegroundLevel(0);
+            chroma_params.SetBackgroundLevel(100);
+            chroma_params.SetKeyEdge(0.5);
+            chroma_params.SetSpillSuppress(200);
+            chroma_params.SetFlareSuppress(200);
+        }
+        static void getStatCam(IBMDSwitcherKeyAdvancedChromaParameters chroma_params)
+        {
+            double y, cb, cr, foreground, background,  key_edge,  spill_supp,  flare_supp;
+            chroma_params.GetSampledColor(out y, out cb,out cr);
+            chroma_params.GetForegroundLevel(out foreground);
+            chroma_params.GetBackgroundLevel(out background);
+            chroma_params.GetKeyEdge(out key_edge);
+            chroma_params.GetSpillSuppress(out spill_supp);
+            chroma_params.GetFlareSuppress(out flare_supp);
+            Console.WriteLine("Static Camera Key Settings:");
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine("Sampled Colour: (" + y + " " + cb + " " + cr + " )");
+            Console.WriteLine("Foreground: " + foreground);
+            Console.WriteLine("Background: " + background);
+            Console.WriteLine("Spill Suppress: " + spill_supp);
+            Console.WriteLine("Flare Suppress: " + flare_supp);
+            Console.WriteLine("---------------------------------");
+        }
+
+        static void getTrackedCam(IBMDSwitcherKeyAdvancedChromaParameters chroma_params)
+        {
+            double y, cb, cr, foreground, background,  key_edge,  spill_supp,  flare_supp;
+            chroma_params.GetSampledColor(out y, out cb, out cr);
+            chroma_params.GetForegroundLevel(out foreground);
+            chroma_params.GetBackgroundLevel(out background);
+            chroma_params.GetKeyEdge(out key_edge);
+            chroma_params.GetSpillSuppress(out spill_supp);
+            chroma_params.GetFlareSuppress(out flare_supp);
+            Console.WriteLine("Tracked Camera Key Settings:");
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine("Sampled Colour: (" + y + " " + cb + " " + cr + " )");
+            Console.WriteLine("Foreground: " + foreground);
+            Console.WriteLine("Background: " + background);
+            Console.WriteLine("Spill Suppress: " + spill_supp);
+            Console.WriteLine("Flare Suppress: " + flare_supp);
+            Console.WriteLine("---------------------------------");
+        }
+
+        static void Main(string[] args)
 		{
 			// Create switcher discovery object
 			IBMDSwitcherDiscovery discovery = new CBMDSwitcherDiscovery();
@@ -75,24 +134,41 @@ namespace SimpleSwitcher
 
 			long prevProgramId;
             //me0.GetProgramInput(out prevProgramId);
-			//
-
-
+            //
 			switcher_key.GetInputFill(out prevProgramId);
+            IBMDSwitcherKeyIterator key_itr;
+            IntPtr key_itr_ptr;
+            Guid KeyItrIDD = typeof(IBMDSwitcherKeyIterator).GUID;
+            me0.CreateIterator(ref KeyItrIDD, out key_itr_ptr);
 
-			long programId;
+            key_itr = (IBMDSwitcherKeyIterator)Marshal.GetObjectForIUnknown(key_itr_ptr);
+            IBMDSwitcherKey upstreamkey;
+            key_itr.Next(out upstreamkey);
 
+
+            IBMDSwitcherKeyAdvancedChromaParameters chroma_params = (IBMDSwitcherKeyAdvancedChromaParameters)upstreamkey;
+
+            long programId;
 			while (true)
 			{
 
                 //switcher_key.GetInputFill(out programId);
                 switcher_key.GetInputFill(out programId);
-                Console.WriteLine(programId);
+                //Console.WriteLine(programId);
+
+
+                /*
+                chroma_params.GetKeyEdge(out edge);
+                Console.WriteLine("-------------------------------");
+                Console.WriteLine(edge);
+                Console.WriteLine("-------------------------------");
+                */
 
                 if (prevProgramId != programId)
                 {
                     //Trigger Camera Change in Unreal
                     //Console.WriteLine(programId);
+
 
 
                     if (programId == 8 && prevProgramId == 7) break;
@@ -102,10 +178,14 @@ namespace SimpleSwitcher
 					if (programId == 1)
 					{
 						SendKeys.SendWait("{9}");
-					}   
+                        getTrackedCam(chroma_params);
+
+                    }   
 					if(programId == 3)
                     {
 						SendKeys.SendWait("{2}");
+                        getStatCam(chroma_params);
+
                     }
 
 	
@@ -119,51 +199,53 @@ namespace SimpleSwitcher
 		}
 	}
 
-	internal class AtemSwitcher
-	{
-		private IBMDSwitcher switcher;
+    internal class AtemSwitcher
+    {
+        private IBMDSwitcher switcher;
 
-		public AtemSwitcher(IBMDSwitcher switcher) => this.switcher = switcher;
+        public AtemSwitcher(IBMDSwitcher switcher) => this.switcher = switcher;
 
-		public IEnumerable<IBMDSwitcherMixEffectBlock> MixEffectBlocks
-		{
-			get
-			{
-				// Create a mix effect block iterator
-				switcher.CreateIterator(typeof(IBMDSwitcherMixEffectBlockIterator).GUID, out IntPtr meIteratorPtr);
-				IBMDSwitcherMixEffectBlockIterator meIterator = Marshal.GetObjectForIUnknown(meIteratorPtr) as IBMDSwitcherMixEffectBlockIterator;
-				if (meIterator == null)
-					yield break;
-
-				// Iterate through all mix effect blocks
-				while (true)
-				{
-					meIterator.Next(out IBMDSwitcherMixEffectBlock me);
-
-					if (me != null)
-						yield return me;
-					else
-						yield break;
-				}
-			}
-		}
-
-		public IEnumerable<IBMDSwitcherKey> switcher_keyers
+        public IEnumerable<IBMDSwitcherMixEffectBlock> MixEffectBlocks
         {
-			get
+            get
+            {
+                // Create a mix effect block iterator
+                switcher.CreateIterator(typeof(IBMDSwitcherMixEffectBlockIterator).GUID, out IntPtr meIteratorPtr);
+                IBMDSwitcherMixEffectBlockIterator meIterator = Marshal.GetObjectForIUnknown(meIteratorPtr) as IBMDSwitcherMixEffectBlockIterator;
+                if (meIterator == null)
+                    yield break;
+
+                // Iterate through all mix effect blocks
+                while (true)
+                {
+                    meIterator.Next(out IBMDSwitcherMixEffectBlock me);
+
+                    if (me != null)
+                        yield return me;
+                    else
+                        yield break;
+                }
+            }
+        }
+       
+        
+
+        public IEnumerable<IBMDSwitcherKey> switcher_keyers
+        {
+            get
             {
                 var atem = new AtemSwitcher(switcher);
                 IBMDSwitcherMixEffectBlock me0 = atem.MixEffectBlocks.FirstOrDefault();
                 me0.CreateIterator(typeof(IBMDSwitcherKeyIterator).GUID, out IntPtr KeyPtr);
                 IBMDSwitcherKeyIterator key_iterator = Marshal.GetObjectForIUnknown(KeyPtr) as IBMDSwitcherKeyIterator;
-				if (key_iterator == null)
-				{
-					yield break;
-				}
-                while(true)
+                if (key_iterator == null)
+                {
+                    yield break;
+                }
+                while (true)
                 {
                     key_iterator.Next(out IBMDSwitcherKey key);
-                    if(key != null)
+                    if (key != null)
                     {
                         yield return key;
                     }
@@ -173,12 +255,12 @@ namespace SimpleSwitcher
                     }
 
                 }
-		
+
             }
 
         }
 
-		public IEnumerable<IBMDSwitcherInput> SwitcherInputs
+        public IEnumerable<IBMDSwitcherInput> SwitcherInputs
 		{
 			get
 			{
