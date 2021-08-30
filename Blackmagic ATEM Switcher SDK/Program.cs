@@ -45,63 +45,136 @@ namespace SimpleSwitcher
 			return id;
 		}
 
+
         static void setStatCam(IBMDSwitcherKeyAdvancedChromaParameters chroma_params)
         {
+            /*
+             * ---------------------------------
+                Sampled Colour: (0.6226 0.3406 0.3484 )
+                Foreground: 0.127
+                Background: 0.918
+                Spill Suppress: 0.228
+                Flare Suppress: 0.272
+                Brightness : -0.178
+                Contrast :0.064
+                Saturation :1
+                Red :-0.14
+                Green :0
+                Blue :0
+             */
             //System.Threading.Thread.Sleep(1000);
-            chroma_params.SetSampledColor(0.3412, 0.3647, 0.4);
-            chroma_params.SetForegroundLevel(0.051);
-            chroma_params.SetBackgroundLevel(0.81);
-            chroma_params.SetKeyEdge(0.753);
-            chroma_params.SetSpillSuppress(0.43);
-            chroma_params.SetFlareSuppress(0.089);
+            chroma_params.SetSampledColor(0.6226, 0.3406, 0.3484);
+            chroma_params.SetForegroundLevel(0.127);
+            chroma_params.SetBackgroundLevel(0.918);
+            chroma_params.SetKeyEdge(0.804);
+            chroma_params.SetSpillSuppress(0.228);
+            chroma_params.SetFlareSuppress(0.272);
+            chroma_params.SetBrightness(-0.178);
+            chroma_params.SetContrast(0.064);
+            chroma_params.SetSaturation(1);
+            chroma_params.SetRed(-0.14);
+            chroma_params.SetGreen(0);
+            chroma_params.SetBlue(0);
         }
 
         static void setTrackedCam(IBMDSwitcherKeyAdvancedChromaParameters chroma_params)
         {
+            /*
+             * ---------------------------------
+             * ---------------------------------
+                Sampled Colour: (0.5374 0.4013 0.363 )
+                Foreground: 0.079
+                Background: 0.57
+                Key Edge: 0.715
+                Spill Suppress: 0.418
+                Flare Suppress: 0.222
+                Brightness : -0.126
+                Contrast :0.064
+                Saturation :1
+                Red :-0.14
+                Green :-0.304
+                Blue :0.088
+             */
             //System.Threading.Thread.Sleep(1000);
-            chroma_params.SetSampledColor(0.48627, 0.41961, 0.35294);
-            chroma_params.SetForegroundLevel(0.085);
-            chroma_params.SetBackgroundLevel(0.962);
-            chroma_params.SetKeyEdge(0.962);
-            chroma_params.SetSpillSuppress(0.430);
-            chroma_params.SetFlareSuppress(0.089);
+            chroma_params.SetSampledColor(0.5374, 0.4013, 0.363);
+            chroma_params.SetForegroundLevel(0.079);
+            chroma_params.SetBackgroundLevel(0.57);
+            chroma_params.SetKeyEdge(0.715);
+            chroma_params.SetSpillSuppress(0.418);
+            chroma_params.SetFlareSuppress(0.222);
+            chroma_params.SetBrightness(-0.126);
+            chroma_params.SetContrast(0.064);
+            chroma_params.SetSaturation(1);
+            chroma_params.SetRed(-0.14);
+            chroma_params.SetGreen(-0.304);
+            chroma_params.SetBlue(0.088);
         }
         static void getStatCam(IBMDSwitcherKeyAdvancedChromaParameters chroma_params)
         {
-            double y, cb, cr, foreground, background,  key_edge,  spill_supp,  flare_supp;
+            double y, cb, cr, foreground, background,  key_edge,  spill_supp,  flare_supp, brightness, contrast, saturation, red, blue, green ;
             chroma_params.GetSampledColor(out y, out cb,out cr);
             chroma_params.GetForegroundLevel(out foreground);
             chroma_params.GetBackgroundLevel(out background);
             chroma_params.GetKeyEdge(out key_edge);
             chroma_params.GetSpillSuppress(out spill_supp);
             chroma_params.GetFlareSuppress(out flare_supp);
+            chroma_params.GetBrightness(out brightness);
+            chroma_params.GetContrast(out contrast);
+            chroma_params.GetSaturation(out saturation);
+            chroma_params.GetRed(out red);
+            chroma_params.GetBlue(out blue);
+            chroma_params.GetGreen(out green);
             Console.WriteLine("Static Camera Key Settings:");
             Console.WriteLine("---------------------------------");
             Console.WriteLine("Sampled Colour: (" + y + " " + cb + " " + cr + " )");
             Console.WriteLine("Foreground: " + foreground);
             Console.WriteLine("Background: " + background);
+            Console.WriteLine("Key Edge: " + key_edge);
             Console.WriteLine("Spill Suppress: " + spill_supp);
             Console.WriteLine("Flare Suppress: " + flare_supp);
+            Console.WriteLine("Brightness : " + brightness);
+            Console.WriteLine("Contrast :" + contrast);
+            Console.WriteLine("Saturation :" + saturation);
+            Console.WriteLine("Red :" + red);
+            Console.WriteLine("Green :" + green);
+            Console.WriteLine("Blue :" + blue);
+
+
+
+
+
             Console.WriteLine("---------------------------------");
         }
 
         static void getTrackedCam(IBMDSwitcherKeyAdvancedChromaParameters chroma_params)
         {
-            double y, cb, cr, foreground, background,  key_edge,  spill_supp,  flare_supp;
+            double y, cb, cr, foreground, background, key_edge, spill_supp, flare_supp, brightness, contrast, saturation, red, blue, green;
             chroma_params.GetSampledColor(out y, out cb, out cr);
             chroma_params.GetForegroundLevel(out foreground);
             chroma_params.GetBackgroundLevel(out background);
             chroma_params.GetKeyEdge(out key_edge);
             chroma_params.GetSpillSuppress(out spill_supp);
             chroma_params.GetFlareSuppress(out flare_supp);
+            chroma_params.GetBrightness(out brightness);
+            chroma_params.GetContrast(out contrast);
+            chroma_params.GetSaturation(out saturation);
+            chroma_params.GetRed(out red);
+            chroma_params.GetBlue(out blue);
+            chroma_params.GetGreen(out green);
             Console.WriteLine("Tracked Camera Key Settings:");
             Console.WriteLine("---------------------------------");
             Console.WriteLine("Sampled Colour: (" + y + " " + cb + " " + cr + " )");
             Console.WriteLine("Foreground: " + foreground);
             Console.WriteLine("Background: " + background);
+            Console.WriteLine("Key Edge: " + key_edge);
             Console.WriteLine("Spill Suppress: " + spill_supp);
             Console.WriteLine("Flare Suppress: " + flare_supp);
-            Console.WriteLine("---------------------------------");
+            Console.WriteLine("Brightness : " + brightness);
+            Console.WriteLine("Contrast :" + contrast);
+            Console.WriteLine("Saturation :" + saturation);
+            Console.WriteLine("Red :" + red);
+            Console.WriteLine("Green :" + green);
+            Console.WriteLine("Blue :" + blue);
         }
 
         static void Main(string[] args)
@@ -178,12 +251,16 @@ namespace SimpleSwitcher
 					if (programId == 1)
 					{
 						SendKeys.SendWait("{2}");
+                        Console.WriteLine("Switching to Tracked Cam!");
+                        getTrackedCam(chroma_params);
                         setTrackedCam(chroma_params);
 
                     }   
 					if(programId == 3)
                     {
 						SendKeys.SendWait("{9}");
+                        Console.WriteLine("Switching to Static Cam!");
+                        getStatCam(chroma_params);
                         setStatCam(chroma_params);
 
                     }
