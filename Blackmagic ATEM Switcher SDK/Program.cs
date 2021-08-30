@@ -1,4 +1,4 @@
-﻿/* -LICENSE-START-
+/* -LICENSE-START-
 ** Copyright (c) 2019 Blackmagic Design
 **
 ** Permission is hereby granted, free of charge, to any person or organization
@@ -47,24 +47,24 @@ namespace SimpleSwitcher
 
         static void setStatCam(IBMDSwitcherKeyAdvancedChromaParameters chroma_params)
         {
-            System.Threading.Thread.Sleep(1000);
-            chroma_params.SetSampledColor(235, 128, 128);
-            chroma_params.SetForegroundLevel(100);
-            chroma_params.SetBackgroundLevel(0);
-            chroma_params.SetKeyEdge(1.0);
-            chroma_params.SetSpillSuppress(0);
-            chroma_params.SetFlareSuppress(0);
+            //System.Threading.Thread.Sleep(1000);
+            chroma_params.SetSampledColor(0.3412, 0.3647, 0.4);
+            chroma_params.SetForegroundLevel(0.051);
+            chroma_params.SetBackgroundLevel(0.81);
+            chroma_params.SetKeyEdge(0.753);
+            chroma_params.SetSpillSuppress(0.43);
+            chroma_params.SetFlareSuppress(0.089);
         }
 
         static void setTrackedCam(IBMDSwitcherKeyAdvancedChromaParameters chroma_params)
         {
-            System.Threading.Thread.Sleep(1000);
-            chroma_params.SetSampledColor(16, 128, 128);
-            chroma_params.SetForegroundLevel(0);
-            chroma_params.SetBackgroundLevel(100);
-            chroma_params.SetKeyEdge(0.5);
-            chroma_params.SetSpillSuppress(200);
-            chroma_params.SetFlareSuppress(200);
+            //System.Threading.Thread.Sleep(1000);
+            chroma_params.SetSampledColor(0.48627, 0.41961, 0.35294);
+            chroma_params.SetForegroundLevel(0.085);
+            chroma_params.SetBackgroundLevel(0.962);
+            chroma_params.SetKeyEdge(0.962);
+            chroma_params.SetSpillSuppress(0.430);
+            chroma_params.SetFlareSuppress(0.089);
         }
         static void getStatCam(IBMDSwitcherKeyAdvancedChromaParameters chroma_params)
         {
@@ -108,8 +108,8 @@ namespace SimpleSwitcher
 		{
 			// Create switcher discovery object
 			IBMDSwitcherDiscovery discovery = new CBMDSwitcherDiscovery();
-			
 
+            Console.WriteLine("version 1.4");
 			// Connect to switcher
 			Console.Write("Enter switcher IP address: ");
             String switcherIP = "192.168.1.2";//Console.ReadLine();
@@ -177,14 +177,14 @@ namespace SimpleSwitcher
 					//theoretically this is where we send outputs instead of sending to console ._. -Sam
 					if (programId == 1)
 					{
-						SendKeys.SendWait("{9}");
-                        getTrackedCam(chroma_params);
+						SendKeys.SendWait("{2}");
+                        setTrackedCam(chroma_params);
 
                     }   
 					if(programId == 3)
                     {
-						SendKeys.SendWait("{2}");
-                        getStatCam(chroma_params);
+						SendKeys.SendWait("{9}");
+                        setStatCam(chroma_params);
 
                     }
 
